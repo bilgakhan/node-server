@@ -1,1 +1,3 @@
 ### Node Server
+
+## MIT License
