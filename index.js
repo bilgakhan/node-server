@@ -150,3 +150,5 @@ app.delete("/delete", (req, res) => {
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`Server running: http://${process.env.IP}:${process.env.PORT}`);
 });
+
+// server running in host
