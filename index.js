@@ -127,6 +127,25 @@ app.put("/put/:id", (req, res) => {
   res.end();
 });
 
+// delete item
+
+app.delete("/delete", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  const { email } = req.body;
+  for (let index = 0; index < users.length; index++) {
+    if (email === users[index]["email"]) {
+      users.splice(index); // o'chiradi
+      res.end();
+    }
+  }
+
+  res.status(200).json({
+    message: "Deleted!",
+  });
+});
+
 // run the server
 app.listen(process.env.PORT, process.env.IP, () => {
   console.log(`Server running: http://${process.env.IP}:${process.env.PORT}`);
