@@ -1,11 +1,29 @@
 const express = require("express");
 const app = express();
+const fs = require("fs");
+require("dotenv").config();
 
 app.use(express.json());
 
 let users = [];
 
-// server post
+// shunchaki home page
+app.get("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  fs.readFile("static/index.html", function (err, pgress) {
+    if (err) {
+      res.write("PAGE NOT FOUND 404");
+    } else {
+      res.writeHead(200, { "Content-Type": "text/html" });
+      res.write(pgress);
+      res.send();
+    }
+  });
+});
+
+// post qilish qismi
 
 app.post("/register", (req, res) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -85,7 +103,7 @@ app.put("/put/:id", (req, res) => {
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
   const { email, password } = req.body;
- 
+
   let isEdited = false;
   for (let index = 0; index < users.length; index++) {
     if (users[index]["email"] === req.params.id) {
@@ -98,23 +116,18 @@ app.put("/put/:id", (req, res) => {
 
   if (isEdited) {
     res.status(200).json({
-      message: "Updated!",
+      message: "Tegishli ma'lumot yangilandi",
     });
   } else {
     res.status(200).json({
-      message: "Not updated!",
-      error: "db error",
+      message: "Yangilanmadi",
+      error: "tarmoq xatoligi",
     });
   }
   res.end();
 });
 
-// IP settings
-const IP = "192.168.100.10";
-const PORT = 3300;
-
-// running server
-
-app.listen(PORT, IP, () => {
-  console.log(`Server running: http://${IP}:${PORT}`);
+// run the server
+app.listen(process.env.PORT, process.env.IP, () => {
+  console.log(`Server running: http://${process.env.IP}:${process.env.PORT}`);
 });
